@@ -1,0 +1,2 @@
+class TestLoginCourier:
+    pass
