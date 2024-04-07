@@ -1,3 +1,4 @@
+import allure
 import pytest
 import json
 
@@ -7,6 +8,7 @@ from helper_functions.order_helpers import OrderHelpers
 
 class TestCreateOrder:
 
+    @allure.title('Создание заказа. Если список цветов: {colors_list}, успешно')
     @pytest.mark.parametrize(
         'colors_list',
         CreateOrderData.COLORS_LIST

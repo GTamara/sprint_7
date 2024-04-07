@@ -1,8 +1,11 @@
+import allure
+
 from helper_functions.order_helpers import OrderHelpers
 
 
 class TestAcceptOrder:
 
+    @allure.title('Принять заказ. Если переданы id заказа и id курьера, успешно')
     def test_accept_order_with_existing_courier_id_order_id_success(
             self,
             courier_login_valid_creds,
@@ -19,6 +22,7 @@ class TestAcceptOrder:
         assert resp.reason == 'OK'
         assert resp.json().get('ok') == True
 
+    @allure.title('Принять заказ. Если передан id заказа и не передан id курьера, НЕ успешно')
     def test_accept_order_with_empty_courier_id_fail(
             self,
             created_order_data,
@@ -34,6 +38,7 @@ class TestAcceptOrder:
         assert resp.reason == 'Bad Request'
         assert resp.json().get('message') == "Недостаточно данных для поиска"
 
+    @allure.title('Принять заказ. Если НЕ передан id заказа и передан id курьера, НЕ успешно')
     def test_accept_order_with_empty_order_id_fail(
             self,
             courier_login_valid_creds,
@@ -48,6 +53,7 @@ class TestAcceptOrder:
         assert resp.reason == 'Bad Request'
         assert resp.json().get('message') == "Недостаточно данных для поиска"
 
+    @allure.title('Принять заказ. Если передан id не существующего заказа и передан id курьера, НЕ успешно')
     def test_accept_order_with_not_existing_order_id_fail(
             self,
             courier_login_valid_creds,
@@ -65,6 +71,7 @@ class TestAcceptOrder:
         assert resp.reason == 'Not Found'
         assert resp.json().get('message') == "Заказа с таким id не существует"
 
+    @allure.title('Принять заказ. Если передан id существующего заказа и передан id НЕ курьера, НЕ успешно')
     def test_accept_order_with_not_existing_courier_id_fail(
             self,
             courier_login_valid_creds,
@@ -82,6 +89,7 @@ class TestAcceptOrder:
         assert resp.reason == 'Not Found'
         assert resp.json().get('message') == "Заказа с таким id не существует"
 
+    @allure.title('Принять заказ. Если передан id заказа, который уже взят в работу, НЕ успешно')
     def test_accept_order_with_accepted_order_id_fail(
             self,
             courier_login_valid_creds,

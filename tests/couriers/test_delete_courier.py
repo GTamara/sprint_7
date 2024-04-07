@@ -1,9 +1,12 @@
+import allure
+
 from helper_functions.courier_helpers import CourierHelpers
 from helper_functions.login_courier import LoginCourier
 
 
 class TestDeleteCourier:
 
+    @allure.title('Удаление существующего курьера по id успешно')
     def test_delete_courier_with_existing_id_success(self, courier_login_valid_creds):
         login_courier = LoginCourier()
         courier_id = courier_login_valid_creds[1]
@@ -13,6 +16,7 @@ class TestDeleteCourier:
         assert response.reason == 'OK'
         assert response.json()['ok'] == True
 
+    @allure.title('Удаление курьера, если id не передано, не успешно')
     def test_delete_courier_without_id_fail(self):
         courier_helpers = CourierHelpers()
         response = courier_helpers.delete_couriers_by_id('')
@@ -20,8 +24,8 @@ class TestDeleteCourier:
         assert response.reason == 'Bad Request'
         assert response.json()['message'] == "Недостаточно данных для удаления курьера"
 
+    @allure.title('Удаление курьера, по id не существующего курьера, не успешно')
     def test_delete_courier_with_not_existing_courier_id_fail(self, courier_login_valid_creds):
-        login_courier = LoginCourier()
         courier_id = courier_login_valid_creds[1]
         courier_helpers = CourierHelpers()
         courier_helpers.delete_couriers_by_id(courier_id)

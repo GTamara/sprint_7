@@ -9,7 +9,6 @@ from helper_functions.register_courier import RegisterCourier
 
 @pytest.fixture(scope="class")
 def courier_login_valid_creds():
-    print('############ courier_login_valid_creds')
     register_courier = RegisterCourier()
     registered_courier_creds = register_courier.register_new_courier()
     login_courier = LoginCourier()
@@ -21,19 +20,16 @@ def courier_login_valid_creds():
 
 @pytest.fixture(scope="class")
 def courier_valid_login(courier_login_valid_creds):
-    print('@@@@@@@@@@@@@@ courier_valid_login')
     return {'login': courier_login_valid_creds[0]['login']}
 
 
 @pytest.fixture(scope="class")
 def courier_valid_password(courier_login_valid_creds):
-    print('@@@@@@@@@@@@@@ courier_valid_password')
     return {'password': courier_login_valid_creds[0]['password']}
 
 
 @pytest.fixture(scope="class", params=['courier_valid_login', 'courier_valid_password'])
 def courier_login_valid_login_and_password(request):
-    print('@@@@@@@@@@@@@@ courier_login_valid_login_and_password')
     return request.getfixturevalue(request.param)
 
 

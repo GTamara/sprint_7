@@ -1,8 +1,11 @@
+import allure
+
 from helper_functions.order_helpers import OrderHelpers
 
 
 class TestOrderDetails():
 
+    @allure.title('Получить данные заказа. Если передан трек существующего заказа, успешно')
     def test_get_order_details_with_existing_track_success(self, created_order_data):
         track = created_order_data[0]
         order_helpers = OrderHelpers()
@@ -14,6 +17,7 @@ class TestOrderDetails():
             response.json()['order']
         ) == dict
 
+    @allure.title('Получить данные заказа. Если НЕ передан трек существующего заказа, НЕ успешно')
     def test_get_order_details_without_track_fail(self):
         track = None
         order_helpers = OrderHelpers()
@@ -22,6 +26,7 @@ class TestOrderDetails():
         assert response.reason == 'Bad Request'
         assert response.json()['message'] == "Недостаточно данных для поиска"
 
+    @allure.title('Получить данные заказа. Если передан трек НЕ существующего заказа, НЕ успешно')
     def test_get_order_details_with_not_existing_track_fail(self, created_order_data):
         track = created_order_data[0]
         order_helpers = OrderHelpers()
