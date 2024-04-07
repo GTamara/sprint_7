@@ -16,7 +16,6 @@ class TestCreateOrder:
             **CreateOrderData.DEFAULT_CREATE_ORDER_PAYLOAD,
             'color': colors_list
         }
-        payload = json.dumps(payload)
         order_helpers = OrderHelpers()
         response = order_helpers.create_order_request(payload)
         print(response)
