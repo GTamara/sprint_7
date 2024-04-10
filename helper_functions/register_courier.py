@@ -1,3 +1,4 @@
+import allure
 import requests
 from requests import Response
 
@@ -8,6 +9,7 @@ from helper_functions.shared_helper_funcs import HelperFuncs
 class RegisterCourier:
 
     @staticmethod
+    @allure.step('Сформировать тело запроса для регистрации курьера')
     def get_register_payload() -> dict[str, str]:
         login = HelperFuncs.generate_random_string(10)
         password = HelperFuncs.generate_random_string(10)
@@ -20,10 +22,12 @@ class RegisterCourier:
         }
 
     @staticmethod
+    @allure.step('Запрос регистрации нового курьера')
     def register_new_courier_request(payload: dict[str, str]) -> Response:
-        response = requests.post( Urls.HOST + '/api/v1/courier', data=payload)
+        response = requests.post( Urls.HOST + Urls.COURIER_BASE_PATH, data=payload)
         return response
 
+    @allure.step('Получить ответ на запрос регистрации нового курьера')
     def register_new_courier(self) -> dict[str, str]:
         payload = self.get_register_payload()
         response = self.register_new_courier_request(payload)

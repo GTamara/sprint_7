@@ -4,13 +4,15 @@ import string
 
 
 class HelperFuncs:
+
+    @staticmethod
     def generate_random_string(length: int) -> str:
         letters = string.ascii_lowercase + string.digits
         rand_string = ''.join(random.choice(letters) for i in range(length))
         return rand_string
 
     @staticmethod
-    def get_tomorrow_date():
+    def get_tomorrow_date() -> str:
         today = datetime.date.today()
         tomorrow_date = today + datetime.timedelta(days=1)
         return str(tomorrow_date)

@@ -5,6 +5,7 @@ from helper_functions.courier_helpers import CourierHelpers
 from helper_functions.login_courier import LoginCourier
 from helper_functions.order_helpers import OrderHelpers
 from helper_functions.register_courier import RegisterCourier
+from helper_functions.shared_helper_funcs import HelperFuncs
 
 
 @pytest.fixture(scope="class")
@@ -36,37 +37,13 @@ def courier_login_valid_login_and_password(request):
 @pytest.fixture(scope="class")
 def created_order_data():
     order_helpers = OrderHelpers()
+    payload = {
+        **CreateOrderData.DEFAULT_CREATE_ORDER_PAYLOAD,
+        'phone': HelperFuncs.generate_random_phone(),
+        'deliveryDate': HelperFuncs.get_tomorrow_date()
+    }
     resp = order_helpers.create_order_request(CreateOrderData.DEFAULT_CREATE_ORDER_PAYLOAD)
     order_track = order_helpers.get_order_track(resp)
     order_data = order_helpers.get_order_data(order_track)
     yield (order_track, order_data)
     order_helpers.cancel_order(order_track)
-
-
-
-
-@pytest.fixture
-def addition():
-    def core(num1, num2):
-        return num1 + num2
-    return core
-
-def test(request, addition):
-    print(addition(2, 3))
-    print(request.getfixturevalue("addition")(6, 8))
-    assert True
-
-
-
-
-@pytest.fixture(params=['a', 'b'])
-def arg(request):
-    return request.getfixturevalue(request.param)
-
-@pytest.fixture
-def a():
-    return 'aaa'
-
-@pytest.fixture
-def b():
-    return 'bbb'
