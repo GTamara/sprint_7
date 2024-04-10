@@ -1,6 +1,7 @@
 import allure
 
 from helper_functions.order_helpers import OrderHelpers
+from constants.response_error_messages import ResponseErrorMessages
 
 
 class TestAcceptOrder:
@@ -36,7 +37,7 @@ class TestAcceptOrder:
         )
         assert resp.status_code == 400
         assert resp.reason == 'Bad Request'
-        assert resp.json().get('message') == "Недостаточно данных для поиска"
+        assert resp.json().get('message') == ResponseErrorMessages.NOT_ENOUGH_DATA_FOR_SEARCHING
 
     @allure.title('Принять заказ. Если НЕ передан id заказа и передан id курьера, НЕ успешно')
     def test_accept_order_with_empty_order_id_fail(
@@ -51,7 +52,7 @@ class TestAcceptOrder:
         )
         assert resp.status_code == 400
         assert resp.reason == 'Bad Request'
-        assert resp.json().get('message') == "Недостаточно данных для поиска"
+        assert resp.json().get('message') == ResponseErrorMessages.NOT_ENOUGH_DATA_FOR_SEARCHING
 
     @allure.title('Принять заказ. Если передан id не существующего заказа и передан id курьера, НЕ успешно')
     def test_accept_order_with_not_existing_order_id_fail(
@@ -69,7 +70,7 @@ class TestAcceptOrder:
         )
         assert resp.status_code == 404
         assert resp.reason == 'Not Found'
-        assert resp.json().get('message') == "Заказа с таким id не существует"
+        assert resp.json().get('message') == ResponseErrorMessages.ORDER_ID_NOT_EXISTS
 
     @allure.title('Принять заказ. Если передан id существующего заказа и передан id НЕ курьера, НЕ успешно')
     def test_accept_order_with_not_existing_courier_id_fail(
@@ -87,7 +88,7 @@ class TestAcceptOrder:
         )
         assert resp.status_code == 404
         assert resp.reason == 'Not Found'
-        assert resp.json().get('message') == "Заказа с таким id не существует"
+        assert resp.json().get('message') == ResponseErrorMessages.ORDER_ID_NOT_EXISTS
 
     @allure.title('Принять заказ. Если передан id заказа, который уже взят в работу, НЕ успешно')
     def test_accept_order_with_accepted_order_id_fail(
@@ -98,7 +99,6 @@ class TestAcceptOrder:
         courier_id = courier_login_valid_creds[1]
         order_helpers = OrderHelpers()
         order_id = order_helpers.get_order_id(created_order_data[1])
-        # order_helpers.cancel_order(created_order_data[0])
         order_helpers.accept_order(
             order_id,
             courier_id,
@@ -109,4 +109,4 @@ class TestAcceptOrder:
         )
         assert resp.status_code == 409
         assert resp.reason == 'Conflict'
-        assert resp.json().get('message') == "Этот заказ уже в работе"
+        assert resp.json().get('message') == ResponseErrorMessages.ORDER_ALREADY_ASSIGNED

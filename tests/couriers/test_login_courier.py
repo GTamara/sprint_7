@@ -3,7 +3,7 @@ import allure
 from helper_functions.courier_helpers import CourierHelpers
 from helper_functions.login_courier import LoginCourier
 from helper_functions.shared_helper_funcs import HelperFuncs
-
+from constants.response_error_messages import ResponseErrorMessages
 
 class TestLoginCourier():
 
@@ -26,7 +26,7 @@ class TestLoginCourier():
         assert response.status_code == 400
         assert response.reason == 'Bad Request'
         assert response.json()['code'] == 400
-        assert response.json()['message'] == "Недостаточно данных для входа"
+        assert response.json()['message'] == ResponseErrorMessages.NOT_ENOUGH_DATA_FOR_AUTH
 
     @allure.title('Авторизация существующего курьера. Если неправильный логин или пароль, не успешна')
     def test_login_courier_with_wrong_login_or_password_fail_1(self, courier_login_valid_login_and_password):
@@ -41,7 +41,7 @@ class TestLoginCourier():
         })
         assert response.status_code == 404
         assert response.reason == 'Not Found'
-        assert response.json()['message'] == "Учетная запись не найдена"
+        assert response.json()['message'] == ResponseErrorMessages.ACCOUNT_NOT_FOUND
 
     @allure.title('Авторизация НЕ существующего курьера не успешна')
     def test_login_courier_with_not_existing_courier(self, courier_login_valid_creds):
@@ -51,4 +51,4 @@ class TestLoginCourier():
         response = login_courier.login_courier(courier_login_valid_creds[0])
         assert response.status_code == 404
         assert response.reason == 'Not Found'
-        assert response.json()['message'] == "Учетная запись не найдена"
+        assert response.json()['message'] == ResponseErrorMessages.ACCOUNT_NOT_FOUND

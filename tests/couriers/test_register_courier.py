@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from helper_functions.register_courier import RegisterCourier
+from constants.response_error_messages import ResponseErrorMessages
 
 
 class TestRegisterCourier:
@@ -23,7 +24,7 @@ class TestRegisterCourier:
         response = register_courier.register_new_courier_request(payload)
         assert response.status_code == 409
         assert response.reason == 'Conflict'
-        assert response.json()['message'] == "Этот логин уже используется. Попробуйте другой."
+        assert response.json()['message'] == ResponseErrorMessages.LOGIN_ALREADY_IN_USE_TRY_ANOTHER_ONE
 
     @allure.title('Регистрация курьера. Если не передан логин или пароль, не успешна')
     @pytest.mark.parametrize(
@@ -37,7 +38,7 @@ class TestRegisterCourier:
         response = register_courier.register_new_courier_request(payload)
         assert response.status_code == 400
         assert response.reason == 'Bad Request'
-        assert response.json()['message'] == "Недостаточно данных для создания учетной записи"
+        assert response.json()['message'] == ResponseErrorMessages.NOT_ENOUGH_DATA_TO_REGISTER
         assert response.json()['code'] == 400
 
     @allure.title('Регистрация существующего курьера. Если не передано имя, успешна')
@@ -63,4 +64,4 @@ class TestRegisterCourier:
         response = register_courier.register_new_courier_request(registered_login_payload)
         assert response.status_code == 409
         assert response.reason == 'Conflict'
-        assert response.json()['message'] == "Этот логин уже используется. Попробуйте другой."
+        assert response.json()['message'] == ResponseErrorMessages.LOGIN_ALREADY_IN_USE_TRY_ANOTHER_ONE

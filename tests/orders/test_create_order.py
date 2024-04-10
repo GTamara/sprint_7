@@ -1,6 +1,5 @@
 import allure
 import pytest
-import json
 
 from data.create_order_data import CreateOrderData
 from helper_functions.order_helpers import OrderHelpers
