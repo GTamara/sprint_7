@@ -32,9 +32,7 @@ class TestLoginCourier():
     def test_login_courier_with_wrong_login_or_password_fail_1(self, courier_login_valid_login_and_password):
         login_courier = LoginCourier()
         login = courier_login_valid_login_and_password.get('login')
-        login = login if bool(login) else HelperFuncs.generate_random_string(8)
         password = courier_login_valid_login_and_password.get('password')
-        password = password if bool(password) else HelperFuncs.generate_random_string(8)
         response = login_courier.login_courier({
             'login': login,
             'password': password,

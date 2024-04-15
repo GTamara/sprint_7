@@ -20,13 +20,19 @@ def courier_login_valid_creds():
 
 
 @pytest.fixture(scope="class")
-def courier_valid_login(courier_login_valid_creds):
-    return {'login': courier_login_valid_creds[0]['login']}
+def courier_valid_login_and_incorrect_password(courier_login_valid_creds):
+    return {
+        'login': courier_login_valid_creds[0]['login'],
+        'password': HelperFuncs.generate_random_string(8)
+    }
 
 
 @pytest.fixture(scope="class")
-def courier_valid_password(courier_login_valid_creds):
-    return {'password': courier_login_valid_creds[0]['password']}
+def courier_valid_password_and_incorrect_login(courier_login_valid_creds):
+    return {
+        'password': courier_login_valid_creds[0]['password'],
+        'login': HelperFuncs.generate_random_string(8)
+    }
 
 
 @pytest.fixture(scope="class", params=['courier_valid_login', 'courier_valid_password'])

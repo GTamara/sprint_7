@@ -9,7 +9,6 @@ class TestDeleteCourier:
 
     @allure.title('Удаление существующего курьера по id успешно')
     def test_delete_courier_with_existing_id_success(self, courier_login_valid_creds):
-        login_courier = LoginCourier()
         courier_id = courier_login_valid_creds[1]
         courier_helpers = CourierHelpers()
         response = courier_helpers.delete_couriers_by_id(courier_id)
