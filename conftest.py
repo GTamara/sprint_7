@@ -8,7 +8,7 @@ from helper_functions.register_courier import RegisterCourier
 from helper_functions.shared_helper_funcs import HelperFuncs
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def courier_login_valid_creds():
     register_courier = RegisterCourier()
     registered_courier_creds = register_courier.register_new_courier()
@@ -19,7 +19,7 @@ def courier_login_valid_creds():
     courier_helpers.delete_couriers_by_id(courier_id)
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def courier_valid_login_and_incorrect_password(courier_login_valid_creds):
     return {
         'login': courier_login_valid_creds[0]['login'],
@@ -27,7 +27,7 @@ def courier_valid_login_and_incorrect_password(courier_login_valid_creds):
     }
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def courier_valid_password_and_incorrect_login(courier_login_valid_creds):
     return {
         'password': courier_login_valid_creds[0]['password'],
@@ -35,12 +35,15 @@ def courier_valid_password_and_incorrect_login(courier_login_valid_creds):
     }
 
 
-@pytest.fixture(scope="class", params=['courier_valid_login', 'courier_valid_password'])
+@pytest.fixture(
+    scope="function",
+    params=['courier_valid_login_and_incorrect_password', 'courier_valid_password_and_incorrect_login']
+)
 def courier_login_valid_login_and_password(request):
     return request.getfixturevalue(request.param)
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def created_order_data():
     order_helpers = OrderHelpers()
     payload = {
